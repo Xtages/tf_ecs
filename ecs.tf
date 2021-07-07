@@ -108,7 +108,7 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
 }
 
 resource "aws_ecs_capacity_provider" "xtages_capacity_provider" {
-  name = "xtages_capacity"
+  name = "xtages_capacity-${var.env}"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs_xtages_asg.arn
@@ -131,7 +131,7 @@ resource "aws_ecs_capacity_provider" "xtages_capacity_provider" {
 # Scale up alarm
 
 resource "aws_autoscaling_policy" "cpu_asg_policy" {
-  name                   = "CPU-ASG-Policy-Add"
+  name                   = "CPU-ASG-Policy-Add-${var.env}"
   autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = "1"
@@ -140,7 +140,7 @@ resource "aws_autoscaling_policy" "cpu_asg_policy" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_above_80p_alarm" {
-  alarm_name          = "CPU-above-80p"
+  alarm_name          = "CPU-above-80p-${var.env}"
   alarm_description   = "CPU above 80%"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
@@ -161,7 +161,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_above_80p_alarm" {
 # Scale down alarm
 
 resource "aws_autoscaling_policy" "cpu_asg_policy_scaledown" {
-  name                   = "CPU-ASG-Policy-scaledown"
+  name                   = "CPU-ASG-Policy-scaledown-${var.env}"
   autoscaling_group_name = aws_autoscaling_group.ecs_xtages_asg.name
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = "-1"
@@ -170,7 +170,7 @@ resource "aws_autoscaling_policy" "cpu_asg_policy_scaledown" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_below_5p_alarm" {
-  alarm_name          = "CPU-below-5p"
+  alarm_name          = "CPU-below-5p-${var.env}"
   alarm_description   = "CPU below 5%"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "2"
