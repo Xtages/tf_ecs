@@ -16,6 +16,11 @@ resource "aws_ecs_cluster" "xtages_cluster" {
     weight            = 1
     base              = 0
   }
+
+  tags = {
+    Terraform   = true
+    Environment = var.env
+  }
 }
 
 resource "aws_launch_template" "ecs_xtages_launch_template" {
@@ -25,7 +30,8 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
   key_name               = "xtages-${var.env}"
   update_default_version = true
   tags = {
-    Terraform = true
+    Terraform   = true
+    Environment = var.env
   }
 
   iam_instance_profile {
@@ -96,12 +102,17 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
     },
     {
       key                 = "Name"
-      value               = "ECS cluster"
+      value               = "ECS cluster - ${var.env}"
       propagate_at_launch = true
     },
     {
       key                 = "Organization"
       value               = "Xtages"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Environment"
+      value               = var.env
       propagate_at_launch = true
     }
   ]
