@@ -1,6 +1,6 @@
 resource "aws_security_group" "ecs_sg" {
   vpc_id      = var.vpc_id
-  name        = "ecs"
+  name_prefix = "ecs"
   description = "security group for ecs"
   egress {
     from_port   = 0
@@ -24,13 +24,13 @@ resource "aws_security_group" "ecs_sg" {
   }
   tags = {
     Environment = var.env
-    Name = "ecs"
+    Name        = "ecs"
   }
 }
 
 resource "aws_security_group" "xtages_lb_sg" {
   vpc_id      = var.vpc_id
-  name        = "xtages-lb-sg"
+  name_prefix = "xtages-lb-sg"
   description = "security group for ecs"
   egress {
     from_port   = 0
@@ -54,7 +54,8 @@ resource "aws_security_group" "xtages_lb_sg" {
   }
 
   tags = {
-    Name = "xtages"
+    Environment = var.env
+    Name        = "ecs"
   }
 }
 

@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "xtages_cluster" {
   name = var.cluster_name
 
   setting {
-    name = "containerInsights"
+    name  = "containerInsights"
     value = "enabled"
   }
 
@@ -13,8 +13,8 @@ resource "aws_ecs_cluster" "xtages_cluster" {
 
   default_capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.xtages_capacity_provider.name
-    weight = 1
-    base = 0
+    weight            = 1
+    base              = 0
   }
 }
 
@@ -41,10 +41,10 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
 }
 
 resource "aws_autoscaling_group" "ecs_xtages_asg" {
-  name_prefix                = "ecs-xtages-autoscaling"
-  vpc_zone_identifier = var.private_subnet_ids
-  min_size            = 1
-  max_size            = 10
+  name_prefix           = "ecs-xtages-autoscaling"
+  vpc_zone_identifier   = var.private_subnet_ids
+  min_size              = 1
+  max_size              = 10
   protect_from_scale_in = true
 
   mixed_instances_policy {
@@ -122,9 +122,9 @@ resource "aws_ecs_capacity_provider" "xtages_capacity_provider" {
     }
   }
   tags = {
-    Name = "ECS Cluster"
+    Name         = "ECS Cluster"
     Organization = "Xtages"
-    Terraform = true
+    Terraform    = true
   }
 }
 
