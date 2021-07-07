@@ -1,6 +1,14 @@
+locals {
+  tags = {
+    Organization = "Xtages"
+    Terraform    = true
+    Environment  = var.env
+  }
+}
+
 data "aws_ami" "latest_ecs" {
   most_recent = true
-  owners = ["591542846629"] # AWS
+  owners      = ["591542846629"] # AWS
 
   filter {
     name   = "name"

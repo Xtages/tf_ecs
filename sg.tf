@@ -22,10 +22,7 @@ resource "aws_security_group" "ecs_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Environment = var.env
-    Name        = "ecs"
-  }
+  tags = local.tags
 }
 
 resource "aws_security_group" "xtages_lb_sg" {
@@ -53,9 +50,6 @@ resource "aws_security_group" "xtages_lb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Environment = var.env
-    Name        = "ecs"
-  }
+  tags = local.tags
 }
 

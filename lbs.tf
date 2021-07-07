@@ -7,9 +7,7 @@ resource "aws_lb" "xtages_console_lb" {
   security_groups = [aws_security_group.xtages_lb_sg.id]
   subnets         = var.public_subnet_ids
 
-  tags = {
-    Environment = var.env
-  }
+  tags = local.tags
 }
 
 resource "aws_lb" "xtages_customers_lb" {
@@ -21,8 +19,5 @@ resource "aws_lb" "xtages_customers_lb" {
   security_groups = [aws_security_group.xtages_lb_sg.id]
   subnets         = var.public_subnet_ids
 
-  tags = {
-    Environment = var.env
-    Terraform   = true
-  }
+  tags = local.tags
 }
