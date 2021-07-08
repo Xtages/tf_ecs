@@ -27,7 +27,7 @@ resource "aws_iam_instance_profile" "ecs_ec2_role" {
 resource "aws_iam_role_policy" "ecs_ec2_role_policy" {
   name_prefix = "ecs_ec2_role_policy"
   role        = aws_iam_role.ecs_ec2_role.id
-  policy = templatefile("../policies/ecs_ec2_role_policy.json",{})
+  policy = templatefile("${path.module}/policies/ecs_ec2_role_policy.json",{})
 }
 
 # ecs service role
