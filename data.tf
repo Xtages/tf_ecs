@@ -4,6 +4,28 @@ locals {
     Terraform    = true
     Environment  = var.env
   }
+  ecs_tags = [
+    {
+      key                 = "Terraform"
+      value               = true
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Name"
+      value               = "ECS cluster - ${var.env}"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Organization"
+      value               = "Xtages"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Environment"
+      value               = var.env
+      propagate_at_launch = true
+    }
+  ]
 }
 
 data "aws_ami" "latest_ecs" {
