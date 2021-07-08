@@ -27,48 +27,7 @@ resource "aws_iam_instance_profile" "ecs_ec2_role" {
 resource "aws_iam_role_policy" "ecs_ec2_role_policy" {
   name_prefix = "ecs_ec2_role_policy"
   role        = aws_iam_role.ecs_ec2_role.id
-  policy      = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-              "ecs:CreateCluster",
-              "ecs:DeregisterContainerInstance",
-              "ecs:DiscoverPollEndpoint",
-              "ecs:Poll",
-              "ecs:RegisterContainerInstance",
-              "ecs:StartTelemetrySession",
-              "ecs:Submit*",
-              "ecs:StartTask",
-              "ecr:GetAuthorizationToken",
-              "ecr:BatchCheckLayerAvailability",
-              "ecr:GetDownloadUrlForLayer",
-              "ecr:BatchGetImage",
-              "logs:CreateLogStream",
-              "logs:PutLogEvents",
-              "ssm:GetParameter*",
-              "ssm:DescribeParameters"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStreams"
-            ],
-            "Resource": [
-                "arn:aws:logs:*:*:*"
-            ]
-        }
-    ]
-}
-EOF
-
+  policy = templatefile("../policies/ecs_ec2_role_policy.json",{})
 }
 
 # ecs service role
