@@ -33,7 +33,7 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
   }
   user_data = base64encode(data.template_file.ecs_user_data.rendered)
   network_interfaces {
-    security_groups = [aws_security_group.ecs_sg.id]
+    security_groups = [var.ecs_sg_id]
   }
   lifecycle {
     create_before_destroy = true
