@@ -92,7 +92,7 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
 }
 
 resource "aws_ecs_capacity_provider" "xtages_capacity_provider" {
-  name = "xtages_capacity-${var.env}"
+  name = "${var.cluster_name}-${random_id.random_id.id}"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs_xtages_asg.arn
