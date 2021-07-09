@@ -21,3 +21,7 @@ variable "cluster_name" {}
 variable "ecs_sg_id" {
   description = "Security Group for ECS"
 }
+
+variable "asg_min_size" {
+  default = 1
+}

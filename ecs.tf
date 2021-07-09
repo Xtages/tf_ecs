@@ -43,7 +43,7 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
 resource "aws_autoscaling_group" "ecs_xtages_asg" {
   name_prefix           = "ecs-xtages-autoscaling"
   vpc_zone_identifier   = var.private_subnet_ids
-  min_size              = 1
+  min_size              = var.asg_min_size
   max_size              = 10
   protect_from_scale_in = true
 
