@@ -54,3 +54,11 @@ data "template_file" "ecs_user_data" {
               start ecs
               EOF
 }
+
+resource "random_id" "random_id" {
+  keepers = {
+    cluster_name = var.cluster_name
+  }
+
+  byte_length = 8
+}

@@ -33,7 +33,7 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
   }
   user_data = base64encode(data.template_file.ecs_user_data.rendered)
   network_interfaces {
-    security_groups = [aws_security_group.ecs_sg.id]
+    security_groups = [var.ecs_sg_id]
   }
   lifecycle {
     create_before_destroy = true
@@ -41,9 +41,9 @@ resource "aws_launch_template" "ecs_xtages_launch_template" {
 }
 
 resource "aws_autoscaling_group" "ecs_xtages_asg" {
-  name_prefix           = "ecs-xtages-autoscaling"
+  name_prefix           = var.cluster_name
   vpc_zone_identifier   = var.private_subnet_ids
-  min_size              = 1
+  min_size              = var.asg_min_size
   max_size              = 10
   protect_from_scale_in = true
 
@@ -92,7 +92,7 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
 }
 
 resource "aws_ecs_capacity_provider" "xtages_capacity_provider" {
-  name = "xtages_capacity-${var.env}"
+  name = "${var.cluster_name}-${random_id.random_id.id}"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs_xtages_asg.arn
