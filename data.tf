@@ -12,7 +12,7 @@ locals {
     },
     {
       key                 = "Name"
-      value               = "ECS cluster - ${var.env}"
+      value               = "ECS ${var.cluster_name} - ${var.env}"
       propagate_at_launch = true
     },
     {
