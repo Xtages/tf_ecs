@@ -44,16 +44,17 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
   name_prefix           = var.cluster_name
   vpc_zone_identifier   = var.private_subnet_ids
   min_size              = var.asg_min_size
-  max_size              = 10
+  max_size              = var.asg_max_size
   protect_from_scale_in = true
 
   mixed_instances_policy {
 
     instances_distribution {
-      on_demand_base_capacity                  = 0
-      on_demand_percentage_above_base_capacity = 0
-      spot_allocation_strategy                 = "lowest-price"
-      spot_max_price                           = "0.0464"
+      on_demand_base_capacity                  = var.asg_instance_distribution["on_demand_base_capacity"]
+      on_demand_percentage_above_base_capacity = var.asg_instance_distribution["on_demand_percentage_above_base_capacity"]
+      spot_allocation_strategy                 = var.asg_instance_distribution["spot_allocation_strategy"]
+      spot_instance_pools                      = var.asg_instance_distribution["spot_instance_pools"]
+      spot_max_price                           = var.asg_instance_distribution["spot_max_price"]
     }
 
     launch_template {
@@ -61,30 +62,14 @@ resource "aws_autoscaling_group" "ecs_xtages_asg" {
         launch_template_id = aws_launch_template.ecs_xtages_launch_template.id
       }
 
-      override {
-        instance_type     = "m5.large"
-        weighted_capacity = "1"
+      dynamic "override" {
+        for_each = var.asg_launch_template_override
+        content {
+          instance_type = override.value["instance_type"]
+          weighted_capacity = override.value["weighted_capacity"]
+        }
       }
 
-      override {
-        instance_type     = "t2.large"
-        weighted_capacity = "1"
-      }
-
-      override {
-        instance_type     = "t3.large"
-        weighted_capacity = "1"
-      }
-
-      override {
-        instance_type     = "t2.medium"
-        weighted_capacity = "1"
-      }
-
-      override {
-        instance_type     = "t3.medium"
-        weighted_capacity = "1"
-      }
     }
   }
 
